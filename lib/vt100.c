@@ -67,7 +67,7 @@ VT_Status VT_PrintCommand(VT_Color foreground, VT_Color background, u8 format)
 {
     if (!CM_IndexExists(foreground, COUNT_OF(foregroundColorsLut)) ||
         !CM_IndexExists(background, COUNT_OF(backgroundColorsLut))) {
-        return VT_STATUS_LUT_ERR;
+        return VT_StatusLutErr;
     }
 
     /* Print color and font commands */
@@ -75,7 +75,7 @@ VT_Status VT_PrintCommand(VT_Color foreground, VT_Color background, u8 format)
     printf("%s", backgroundColorsLut[background]);
     PrintFormatCommand(format);
 
-    return VT_STATUS_OK;
+    return VT_StatusOk;
 }
 
 void VT_ResetAllCommand(void)

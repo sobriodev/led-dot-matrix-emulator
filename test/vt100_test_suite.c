@@ -11,13 +11,13 @@ void test_vt100_InvalidLutIndexes_VT_PrintCommand_ErrorReturned(void)
 {
     /* This should return LUT error code */
     TEST_ASSERT_EQUAL_INT32(
-                VT_STATUS_LUT_ERR,
+                VT_StatusLutErr,
                 VT_PrintCommand(-1, 0, 0));
     TEST_ASSERT_EQUAL_INT32(
-                VT_STATUS_LUT_ERR,
+                VT_StatusLutErr,
                 VT_PrintCommand(VT_ColorMagenta, VT_ColorDefault + 1, 0));
     TEST_ASSERT_EQUAL_INT32(
-                VT_STATUS_LUT_ERR,
+                VT_StatusLutErr,
                 VT_PrintCommand(VT_ColorDefault + 1, 0, 0));
 }
 
