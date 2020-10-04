@@ -13,8 +13,8 @@ extern "C" {
 
 typedef enum
 {
-    VT_STATUS_OK, /* OK */
-    VT_STATUS_LUT_ERR /* Invalid LUT array index */
+    VT_StatusOk, /* OK */
+    VT_StatusLutErr /* Invalid LUT array index */
 } VT_Status;
 
 typedef enum
