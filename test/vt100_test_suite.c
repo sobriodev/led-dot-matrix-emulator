@@ -44,7 +44,8 @@ void test_vt100_VT_PrintCommand_Works(void)
     VT_PrintCommand(
                 VT_ColorCyan,
                 VT_ColorMagenta,
-                VT_FormatBold | VT_FormatUnderlined | VT_FormatBlink);
+                VT_FormatBold | VT_FormatUnderlined
+                | VT_FormatBlink | VT_FormatInverted);
     printf("The text should bold magenta with cyan foreground"
            " and underlined/blink extras because invert flag is set\n");
 
