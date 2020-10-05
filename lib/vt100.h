@@ -42,7 +42,7 @@ typedef enum
 /* ------------------------------------------------------------------------- */
 
 VT_Status VT_PrintCommand(VT_Color foreground, VT_Color background, u8 format);
-void VT_ResetAllCommand(void);
+void VT_ResetAllCommands(void);
 
 #if defined(__cplusplus)
 }

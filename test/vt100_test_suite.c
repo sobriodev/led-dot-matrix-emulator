@@ -62,7 +62,7 @@ void test_vt100_VT_PrintCommand_Works(void)
                     VT_ColorDefault,
                     VT_FormatUnderlined));
     printf("The text should be green and underlined\n");
-    VT_ResetAllCommand();
+    VT_ResetAllCommands();
 
     printf("The text should have default properties\n");
 

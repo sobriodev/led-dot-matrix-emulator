@@ -32,7 +32,7 @@ const char* backgroundColorsLut[] =
 /* -------------------------- PRIVATE FUNCTIONS ---------------------------- */
 /* ------------------------------------------------------------------------- */
 
-void ResetFontFormatCommand(void)
+void ResetFontFormatCommands(void)
 {
     printf("\e[21m"); /* Reset bold format */
     printf("\e[24m"); /* Reset underlined format */
@@ -43,7 +43,7 @@ void ResetFontFormatCommand(void)
 void PrintFormatCommand(u8 format)
 {
     /* Clear old settings */
-    ResetFontFormatCommand();
+    ResetFontFormatCommands();
 
     if (U32_CHECK_BIT_SET(format, VT_FormatBold)) {
         printf("\e[1m");
@@ -78,7 +78,7 @@ VT_Status VT_PrintCommand(VT_Color foreground, VT_Color background, u8 format)
     return VT_StatusOk;
 }
 
-void VT_ResetAllCommand(void)
+void VT_ResetAllCommands(void)
 {
     printf("\e[0m");
 }
