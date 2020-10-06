@@ -71,7 +71,7 @@ Thumbs.db
 *.dll
 *.exe
 
-# Other
+# Cmake specific
 CMakeLists.txt.user
 *cmake
 CMakeCache.txt
