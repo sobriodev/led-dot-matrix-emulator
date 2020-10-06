@@ -73,3 +73,8 @@ Thumbs.db
 
 # Other
 CMakeLists.txt.user
+*cmake
+CMakeCache.txt
+CMakeFiles/
+Testing/
+lib/CMakeFiles/
