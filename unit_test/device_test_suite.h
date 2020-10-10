@@ -6,10 +6,10 @@ extern "C" {
 #endif
 
 /* ------------------------------------------------------------------------- */
-/* -------------------------- MEM_Malloc() CASES --------------------------- */
+/* ------------------------ DEV_CreateDevice() CASES ----------------------- */
 /* ------------------------------------------------------------------------- */
 
-void test_mem_MallocFailure_MEM_Malloc_ErrReturned();
+void test_device_MallocFailure_DEV_CreateDevice_ErrReturned();
 
 #if defined(__cplusplus)
 }

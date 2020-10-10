@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include "common.h"
+
 /* ------------------------------------------------------------------------- */
 /* ------------------------------ DATA TYPES ------------------------------- */
 /* ------------------------------------------------------------------------- */
@@ -34,7 +36,13 @@ typedef struct
 /* ----------------------------- API FUNCTIONS ----------------------------- */
 /* ------------------------------------------------------------------------- */
 
-DEV_Status DEV_CreateDevice(DEV_Info* devInfo, DEV_Color color);
+/* Create device */
+DEV_Status DEV_CreateDevice(
+        DEV_Info** devInfo,
+        DEV_Color color,
+        CM_Mallock mallocCallback);
+
+/* Destroy device */
 DEV_Status DEV_DestroyDevice(DEV_Info** devInfo);
 
 #if defined(__cplusplus)

@@ -4,11 +4,15 @@
 #include "unity.h"
 
 /* ------------------------------------------------------------------------- */
-/* -------------------------- MEM_Malloc() CASES --------------------------- */
+/* ------------------------ DEV_CreateDevice() CASES ----------------------- */
 /* ------------------------------------------------------------------------- */
 
-void test_mem_MallocFailure_MEM_Malloc_ErrReturned()
+void test_device_MallocFailure_DEV_CreateDevice_ErrReturned()
 {
-    TEST_ASSERT_TRUE(true);
+    DEV_Status status;
+    DEV_Info *devInfo;
+    status = DEV_CreateDevice(&devInfo, DEV_ColorGreen, MEM_MallocFailMock);
+
+    TEST_ASSERT_EQUAL_INT32(DEV_StatusMemErr, status);
 }
 

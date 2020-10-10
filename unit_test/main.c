@@ -27,7 +27,7 @@ int main(void)
     RUN_TEST(test_vt100_VT_PrintCommand_Works);
 
     /* SUITE: Device */
-    RUN_TEST(test_mem_MallocFailure_MEM_Malloc_ErrReturned);
+    RUN_TEST(test_device_MallocFailure_DEV_CreateDevice_ErrReturned);
 
     return UNITY_END();
 }
