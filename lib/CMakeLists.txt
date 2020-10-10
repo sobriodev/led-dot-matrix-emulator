@@ -1,1 +1,1 @@
-add_library(lib vt100.h common.h vt100.c device.h device.c)
+add_library(lib vt100.h vt100.c common.h mem.h mem.c device.h device.c)
