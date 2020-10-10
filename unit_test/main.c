@@ -1,6 +1,7 @@
 #include "unity.h"
 #include "common_test_suite.h"
 #include "vt100_test_suite.h"
+#include "device_test_suite.h"
 
 void setUp(void)
 {
@@ -24,6 +25,9 @@ int main(void)
     /* SUITE: VT100 */
     RUN_TEST(test_vt100_InvalidLutIndexes_VT_PrintCommand_ErrorReturned);
     RUN_TEST(test_vt100_VT_PrintCommand_Works);
+
+    /* SUITE: Device */
+    RUN_TEST(test_mem_MallocFailure_MEM_Malloc_ErrReturned);
 
     return UNITY_END();
 }
