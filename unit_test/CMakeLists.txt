@@ -13,6 +13,8 @@ add_executable(unit_test
     vt100_test_suite.c
     device_test_suite.h
     device_test_suite.c
+    register_test_suite.h
+    register_test_suite.c
 )
 
 target_link_libraries(unit_test lib mock unity_framework)

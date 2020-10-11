@@ -2,6 +2,7 @@
 #include "common_test_suite.h"
 #include "vt100_test_suite.h"
 #include "device_test_suite.h"
+#include "register_test_suite.h"
 
 void setUp(void)
 {
@@ -30,6 +31,9 @@ int main(void)
     RUN_TEST(test_device_MallocFailure_DEV_CreateDevice_ErrReturned);
     RUN_TEST(test_device_MultipleCalls_DEV_CreateDevice_CorrectIdAssigned);
     RUN_TEST(test_device_DevicePointer_DEV_DestroyDevice_NullAssigned);
+
+    /* SUITE: Register */
+    RUN_TEST(test_register_ByDefault_REG_MemoryInit_PerformsCorrectInit);
 
     return UNITY_END();
 }
