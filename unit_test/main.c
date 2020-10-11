@@ -28,6 +28,7 @@ int main(void)
 
     /* SUITE: Device */
     RUN_TEST(test_device_MallocFailure_DEV_CreateDevice_ErrReturned);
+    RUN_TEST(test_device_MultipleCalls_DEV_CreateDevice_CorrectIdAssigned);
 
     return UNITY_END();
 }

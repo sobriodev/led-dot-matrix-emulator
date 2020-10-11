@@ -10,6 +10,7 @@ extern "C" {
 /* ------------------------------------------------------------------------- */
 
 void test_device_MallocFailure_DEV_CreateDevice_ErrReturned();
+void test_device_MultipleCalls_DEV_CreateDevice_CorrectIdAssigned();
 
 #if defined(__cplusplus)
 }

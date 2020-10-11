@@ -14,7 +14,7 @@ extern "C" {
 /* Device status codes */
 typedef enum
 {
-    DEV_StatusOK, /* OK */
+    DEV_StatusOk, /* OK */
     DEV_StatusMemErr /* Memory allocation error */
 } DEV_Status;
 
@@ -29,7 +29,8 @@ typedef enum
 /* Device info */
 typedef struct
 {
-    /* TODO add contents */
+    u32 id; /* Should be unique within a program */
+    DEV_Color color;
 } DEV_Info;
 
 /* ------------------------------------------------------------------------- */
