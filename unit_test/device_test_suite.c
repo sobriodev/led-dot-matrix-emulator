@@ -29,3 +29,17 @@ void test_device_MultipleCalls_DEV_CreateDevice_CorrectIdAssigned()
         DEV_DestroyDevice(&devInfo);
     }
 }
+
+/* ------------------------------------------------------------------------- */
+/* ------------------------ DEV_DestroyDevice() CASES ---------------------- */
+/* ------------------------------------------------------------------------- */
+
+void test_device_DevicePointer_DEV_DestroyDevice_NullAssigned()
+{
+    DEV_Info *devInfo;
+    DEV_CreateDevice(&devInfo, DEV_ColorGreen, MEM_Malloc);
+    TEST_ASSERT_NOT_NULL(devInfo);
+
+    DEV_DestroyDevice(&devInfo);
+    TEST_ASSERT_NULL(devInfo);
+}
