@@ -18,6 +18,12 @@ void test_common_BitOperations_ValidResults(void);
 void test_common_InvalidIndex_CM_IndexExists_FalseReturned(void);
 void test_common_ValidIndex_CM_IndexExists_TrueReturned(void);
 
+/* ------------------------------------------------------------------------- */
+/* ----------------------- CM_ValueInBounds() CASES ------------------------ */
+/* ------------------------------------------------------------------------- */
+
+void test_common_MiscValues_CM_ValueInBounds_CorrectResults();
+
 #if defined(__cplusplus)
 }
 #endif

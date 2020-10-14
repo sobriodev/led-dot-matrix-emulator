@@ -11,6 +11,14 @@ extern "C" {
 /* ------------------------------ DATA TYPES ------------------------------- */
 /* ------------------------------------------------------------------------- */
 
+/* Register status codes */
+typedef enum
+{
+    REG_StatusOk,
+    REG_StatusWrongAddr,
+    REG_StatusWrongState
+} REG_Status;
+
 /* Decode mode register format */
 typedef enum
 {
@@ -58,7 +66,7 @@ typedef enum
     REG_ScanLimitDigit0To4,
     REG_ScanLimitDigit0To5,
     REG_ScanLimitDigit0To6,
-    REg_ScanLimitdigit0To7
+    REG_ScanLimitdigit0To7
 } REG_ScanLimit;
 
 /* Display test register format */
@@ -90,7 +98,7 @@ typedef enum
 /* Register memory */
 typedef struct
 {
-    u8 digit0;
+    u8 digit0; /* Do not change digit registers order */
     u8 digit1;
     u8 digit2;
     u8 digit3;
@@ -111,6 +119,9 @@ typedef struct
 
 /* Initialize register memory */
 void REG_MemoryInit(REG_Memory* regMemory);
+
+/* Write to register */
+REG_Status REG_Write(REG_Memory *regMemory, REG_Addr regAddr, u8 state);
 
 #if defined(__cplusplus)
 }

@@ -57,3 +57,27 @@ void test_common_ValidIndex_CM_IndexExists_TrueReturned(void)
     /* Signed numbers are converted to unsigned, thus it should also work */
     TEST_ASSERT_TRUE(CM_IndexExists(18446744073709551605U, -10));
 }
+
+/* ------------------------------------------------------------------------- */
+/* ----------------------- CM_ValueInBounds() CASES ------------------------ */
+/* ------------------------------------------------------------------------- */
+
+void test_common_MiscValues_CM_ValueInBounds_CorrectResults()
+{
+    /* Values out of bounds */
+    TEST_ASSERT_FALSE(CM_ValueInBounds(1, 0, 0));
+    TEST_ASSERT_FALSE(CM_ValueInBounds(1, -1, 0));
+    TEST_ASSERT_FALSE(CM_ValueInBounds(10, 0, 9));
+    TEST_ASSERT_FALSE(CM_ValueInBounds(-1921, -19, -18));
+
+    /* Values in bounds */
+    TEST_ASSERT_TRUE(CM_ValueInBounds(0, 0, 0));
+    TEST_ASSERT_TRUE(CM_ValueInBounds(0, 0, 10));
+    TEST_ASSERT_TRUE(CM_ValueInBounds(-10, -10, 312));
+    TEST_ASSERT_TRUE(CM_ValueInBounds(56, -10021, 56));
+
+    /* Left > right */
+    TEST_ASSERT_FALSE(CM_ValueInBounds(0, 10, -10));
+    TEST_ASSERT_FALSE(CM_ValueInBounds(100, 100, -1000));
+    TEST_ASSERT_FALSE(CM_ValueInBounds(87, 99, 87));
+}

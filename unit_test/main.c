@@ -22,6 +22,7 @@ int main(void)
     RUN_TEST(test_common_BitOperations_ValidResults);
     RUN_TEST(test_common_InvalidIndex_CM_IndexExists_FalseReturned);
     RUN_TEST(test_common_ValidIndex_CM_IndexExists_TrueReturned);
+    RUN_TEST(test_common_MiscValues_CM_ValueInBounds_CorrectResults);
 
     /* SUITE: VT100 */
     RUN_TEST(test_vt100_InvalidLutIndexes_VT_PrintCommand_ErrorReturned);
@@ -34,6 +35,10 @@ int main(void)
 
     /* SUITE: Register */
     RUN_TEST(test_register_ByDefault_REG_MemoryInit_PerformsCorrectInit);
+    RUN_TEST(test_register_InvalidRegAddr_REG_Write_ErrReturned);
+    RUN_TEST(test_register_InvalidRegState_REG_Write_ErrReturned);
+    RUN_TEST(test_register_ValidRegAddr_REG_Write_MemoryUpdated);
+    RUN_TEST(test_register_NoOpRegAddr_REG_Write_NothingIsDone);
 
     return UNITY_END();
 }

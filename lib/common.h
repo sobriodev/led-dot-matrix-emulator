@@ -47,9 +47,16 @@ typedef void* (*CM_Mallock)(size);
 /* ----------------------------- API FUNCTIONS ----------------------------- */
 /* ------------------------------------------------------------------------- */
 
+/* Check if given array offset is in bounds */
 static inline bool CM_IndexExists(size index, size arraySize)
 {
     return index < arraySize;
+}
+
+/* Check if value is in bounds (left >= value <= right) */
+static inline bool CM_ValueInBounds(i32 value, i32 left, i32 right)
+{
+    return value >= left && value <= right;
 }
 
 #if defined(__cplusplus)
