@@ -121,7 +121,7 @@ typedef struct
 void REG_MemoryInit(REG_Memory* regMemory);
 
 /* Write to register */
-REG_Status REG_Write(REG_Memory *regMemory, REG_Addr regAddr, u8 state);
+REG_Status REG_Write(REG_Memory* regMemory, REG_Addr regAddr, u8 state);
 
 #if defined(__cplusplus)
 }

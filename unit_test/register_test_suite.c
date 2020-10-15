@@ -116,10 +116,16 @@ void test_register_ValidRegAddr_REG_Write_MemoryUpdated()
     REG_Memory memory;
     REG_MemoryInit(&memory);
 
+    /* Test digit registers */
     TEST_ASSERT_EQUAL_INT32(
                 REG_StatusOk,
                 REG_Write(&memory, REG_AddrDigit0, 0xFA));
 
+    TEST_ASSERT_EQUAL_INT32(
+                REG_StatusOk,
+                REG_Write(&memory, REG_AddrDigit7, 0xBB));
+
+    /* Test config registers */
     TEST_ASSERT_EQUAL_INT32(
                 REG_StatusOk,
                 REG_Write(&memory, REG_AddrDecodeMode, REG_DecodeModeDigit0));
@@ -142,6 +148,7 @@ void test_register_ValidRegAddr_REG_Write_MemoryUpdated()
 
     /* Check whether new values are set */
     TEST_ASSERT_EQUAL_INT32(0xFA, memory.digit0);
+    TEST_ASSERT_EQUAL_INT32(0xBB, memory.digit7);
     TEST_ASSERT_EQUAL_INT32(REG_DecodeModeDigit0, memory.decodeMode);
     TEST_ASSERT_EQUAL_INT32(REG_Intensity29_32, memory.intensity);
     TEST_ASSERT_EQUAL_INT32(REG_ScanLimitDigit0To5, memory.scanLimit);

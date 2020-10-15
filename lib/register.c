@@ -6,19 +6,21 @@
 
 /* Update digit register state */
 static inline void UpdateDigitRegister(
-        REG_Memory *regMemory,
+        REG_Memory* regMemory,
         REG_Addr regAddr,
         u8 state)
 {
-    /* Digit registers base address is 0x01 thus one should be subtracted */
+    /* Digit registers base address is 0x01, thus one should be subtracted */
     u8 digitRegOffset = regAddr - 1;
     u8* digitRegToBeUpdated = &regMemory->digit0 + digitRegOffset;
 
     *digitRegToBeUpdated = state;
 }
 
-/* Update decode mode register state */
-static REG_Status UpdateDecodeModeRegister(REG_Memory *regMemory, u8 state)
+/* Update decode mode register state. Correct states do not fit into
+ * indivisible range and should be handled explicitly
+ */
+static REG_Status UpdateDecodeModeRegister(REG_Memory* regMemory, u8 state)
 {
     switch (state) {
     case REG_DecodeModeOff:
@@ -32,47 +34,19 @@ static REG_Status UpdateDecodeModeRegister(REG_Memory *regMemory, u8 state)
     }
 }
 
-/* Update intensity register state */
-static REG_Status UpdateIntensityRegister(REG_Memory *regMemory, u8 state)
+/* Update registers whose possible states are in indivisible range */
+static REG_Status UpdateRegisterIndivisibleRange(
+        u8* regToBeUpdated,
+        u8 rangeMin,
+        u8 rangeMax,
+        u8 state)
 {
-    if (!CM_ValueInBounds(state, REG_Intensity1_32, REG_Intensity31_32)) {
+    /* Update state only if it fits into range */
+    if (!CM_ValueInBounds(state, rangeMin, rangeMax)) {
         return REG_StatusWrongState;
     }
 
-    regMemory->intensity = state;
-    return REG_StatusOk;
-}
-
-/* Update scan limit register */
-static REG_Status UpdateScanLimitRegister(REG_Memory *regMemory, u8 state)
-{
-    if (!CM_ValueInBounds(state, REG_ScanLimitDigit0, REG_ScanLimitdigit0To7)) {
-        return REG_StatusWrongState;
-    }
-
-    regMemory->scanLimit = state;
-    return REG_StatusOk;
-}
-
-/* Update shutdown register */
-static REG_Status UpdateShutdownRegister(REG_Memory *regMemory, u8 state)
-{
-    if (!CM_ValueInBounds(state, REG_ShutdownOn, REG_ShutdownOff)) {
-        return REG_StatusWrongState;
-    }
-
-    regMemory->shutdown = state;
-    return REG_StatusOk;
-}
-
-/* Update display test register */
-static REG_Status UpdateDisplayTestRegister(REG_Memory *regMemory, u8 state)
-{
-    if (!CM_ValueInBounds(state, REG_DisplayTestOff, REG_DisplayTestOn)) {
-        return REG_StatusWrongState;
-    }
-
-    regMemory->displayTest = state;
+    *regToBeUpdated = state;
     return REG_StatusOk;
 }
 
@@ -100,13 +74,15 @@ void REG_MemoryInit(REG_Memory* regMemory)
     regMemory->displayTest = REG_DisplayTestOff;
 }
 
-REG_Status REG_Write(REG_Memory *regMemory, REG_Addr regAddr, u8 state)
+REG_Status REG_Write(REG_Memory* regMemory, REG_Addr regAddr, u8 state)
 {
     switch (regAddr) {
-    /* Do nothing */
+    /* In case no-op was passed - do nothing */
     case REG_AddrNoOp:
         return REG_StatusOk;
-    /* Save digit state */
+    /* Save digit state. Every combination is possible,
+     * thus there is no point in checking argument correctness.
+     */
     case REG_AddrDigit0:
     case REG_AddrDigit1:
     case REG_AddrDigit2:
@@ -117,16 +93,38 @@ REG_Status REG_Write(REG_Memory *regMemory, REG_Addr regAddr, u8 state)
     case REG_AddrDigit7:
         UpdateDigitRegister(regMemory, regAddr, state);
         return REG_StatusOk;
+    /* Update decode mode register */
     case REG_AddrDecodeMode:
         return UpdateDecodeModeRegister(regMemory, state);
+    /* Update intensity register */
     case REG_AddrIntensity:
-        return UpdateIntensityRegister(regMemory, state);
+        return UpdateRegisterIndivisibleRange(
+                    (u8*)&regMemory->intensity,
+                    REG_Intensity1_32,
+                    REG_Intensity31_32,
+                    state);
+    /* Update scan limit register */
     case REG_AddrScanLimit:
-        return UpdateScanLimitRegister(regMemory, state);
+        return UpdateRegisterIndivisibleRange(
+                    (u8*)&regMemory->scanLimit,
+                    REG_ScanLimitDigit0,
+                    REG_ScanLimitdigit0To7,
+                    state);
+    /* Update shutdown register */
     case REG_AddrShutdown:
-        return UpdateShutdownRegister(regMemory, state);
+        return UpdateRegisterIndivisibleRange(
+                    (u8*)&regMemory->shutdown,
+                    REG_ShutdownOn,
+                    REG_ShutdownOff,
+                    state);
+    /* Update display test register */
     case REG_AddrDisplayTest:
-        return UpdateDisplayTestRegister(regMemory, state);
+        return UpdateRegisterIndivisibleRange(
+                    (u8*)&regMemory->displayTest,
+                    REG_DisplayTestOff,
+                    REG_DisplayTestOn,
+                    state);
+    /* Other addresses lead to wrong address status */
     default:
         return REG_StatusWrongAddr;
     }
