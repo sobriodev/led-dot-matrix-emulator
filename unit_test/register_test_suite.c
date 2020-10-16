@@ -81,7 +81,7 @@ void test_register_InvalidRegState_REG_Write_ErrReturned()
     REG_MemoryInit(&memory);
 
     /* Array of wrong (address, wrong state) pairs */
-    const u32 wrongAddrStatePair[][5] =
+    const u8 wrongAddrStatePair[][5] =
     {
         {REG_AddrDecodeMode, REG_DecodeModeDigit0To3 + 1},
         {REG_AddrIntensity, REG_Intensity31_32 + 1},
