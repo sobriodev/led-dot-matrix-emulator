@@ -99,28 +99,28 @@ REG_Status REG_Write(REG_Memory* regMemory, REG_Addr regAddr, u8 state)
     /* Update intensity register */
     case REG_AddrIntensity:
         return UpdateRegisterIndivisibleRange(
-                    (u8*)&regMemory->intensity,
+                    &regMemory->intensity,
                     REG_Intensity1_32,
                     REG_Intensity31_32,
                     state);
     /* Update scan limit register */
     case REG_AddrScanLimit:
         return UpdateRegisterIndivisibleRange(
-                    (u8*)&regMemory->scanLimit,
+                    &regMemory->scanLimit,
                     REG_ScanLimitDigit0,
                     REG_ScanLimitdigit0To7,
                     state);
     /* Update shutdown register */
     case REG_AddrShutdown:
         return UpdateRegisterIndivisibleRange(
-                    (u8*)&regMemory->shutdown,
+                    &regMemory->shutdown,
                     REG_ShutdownOn,
                     REG_ShutdownOff,
                     state);
     /* Update display test register */
     case REG_AddrDisplayTest:
         return UpdateRegisterIndivisibleRange(
-                    (u8*)&regMemory->displayTest,
+                    &regMemory->displayTest,
                     REG_DisplayTestOff,
                     REG_DisplayTestOn,
                     state);

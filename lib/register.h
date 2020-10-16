@@ -106,11 +106,11 @@ typedef struct
     u8 digit5;
     u8 digit6;
     u8 digit7;
-    REG_DecodeMode decodeMode;
-    REG_Intensity intensity;
-    REG_ScanLimit scanLimit;
-    REG_Shutdown shutdown;
-    REG_DisplayTest displayTest;
+    u8 decodeMode;
+    u8 intensity;
+    u8 scanLimit;
+    u8 shutdown;
+    u8 displayTest;
 } REG_Memory;
 
 /* ------------------------------------------------------------------------- */

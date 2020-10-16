@@ -4,14 +4,28 @@
 #include <string.h>
 
 /* ------------------------------------------------------------------------- */
+/* --------------------------- PRIVATE FUNCTIONS --------------------------- */
+/* ------------------------------------------------------------------------- */
+
+/* Test if register memory was not modified */
+static void AssertRegMemoryNotModified(const REG_Memory* memory)
+{
+    REG_Memory memoryCmp;
+    REG_MemoryInit(&memoryCmp);
+
+    TEST_ASSERT_EQUAL_INT32(0, memcmp(memory, &memoryCmp, sizeof(REG_Memory)));
+}
+
+/* ------------------------------------------------------------------------- */
 /* ------------------------- REG_MemoryInit() CASES ------------------------ */
 /* ------------------------------------------------------------------------- */
 
 void test_register_ByDefault_REG_MemoryInit_PerformsCorrectInit()
 {
-    /* On initial power-up the registers have to contain specific data */
     REG_Memory memory;
     REG_MemoryInit(&memory);
+
+    /* On initial power-up the registers have to contain specific data */
 
     /* RAM registers */
     TEST_ASSERT_EQUAL_UINT8(0x00, memory.digit0);
@@ -41,25 +55,23 @@ void test_register_InvalidRegAddr_REG_Write_ErrReturned()
     REG_Memory memory;
     REG_MemoryInit(&memory);
 
-    /* Memory to be compared */
-    REG_Memory memoryCmp;
-    REG_MemoryInit(&memoryCmp);
+    /* Array of wrong addresses */
+    const u32 wrongAddr[] =
+    {
+        (REG_AddrNoOp -1),
+        (REG_AddrDisplayTest + 1),
+        0x47184,
+        -4143
+    };
 
     u8 dummyState = 0xFF;
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongAddr,
-                REG_Write(&memory, REG_AddrNoOp -1, dummyState));
+    for (size i = 0; i < COUNT_OF(wrongAddr); i++) {
+        REG_Status status = REG_Write(&memory, wrongAddr[i], dummyState);
+        TEST_ASSERT_EQUAL_INT32(REG_StatusWrongAddr, status);
+    }
 
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongAddr,
-                REG_Write(&memory, REG_AddrDisplayTest + 1, dummyState));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongAddr,
-                REG_Write(&memory, 0x47184, dummyState));
-
-    /* Memory should not be modified */
-    TEST_ASSERT_EQUAL_INT32(0, memcmp(&memory, &memoryCmp, sizeof(REG_Memory)));
+    /* Eventually memory should not be modified */
+    AssertRegMemoryNotModified(&memory);
 }
 
 void test_register_InvalidRegState_REG_Write_ErrReturned()
@@ -68,92 +80,66 @@ void test_register_InvalidRegState_REG_Write_ErrReturned()
     REG_Memory memory;
     REG_MemoryInit(&memory);
 
-    /* Memory to be compared */
-    REG_Memory memoryCmp;
-    REG_MemoryInit(&memoryCmp);
+    /* Array of wrong (address, wrong state) pairs */
+    const u32 wrongAddrStatePair[][5] =
+    {
+        {REG_AddrDecodeMode, REG_DecodeModeDigit0To3 + 1},
+        {REG_AddrIntensity, REG_Intensity31_32 + 1},
+        {REG_AddrScanLimit, REG_ScanLimitDigit0 - 1},
+        {REG_AddrShutdown, 0xFF},
+        {REG_AddrDisplayTest, 0xAC}
 
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongState,
-                REG_Write(
-                    &memory,
-                    REG_AddrDecodeMode,
-                    REG_DecodeModeDigit0To3 + 1));
+    };
 
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongState,
-                REG_Write(
-                    &memory,
-                    REG_AddrIntensity,
-                    REG_Intensity31_32 + 1));
+    for (size i = 0 ; i < COUNT_OF(wrongAddrStatePair); i++) {
+        REG_Status status = REG_Write(
+                                &memory,
+                                wrongAddrStatePair[i][0],
+                                wrongAddrStatePair[i][1]);
+        TEST_ASSERT_EQUAL_INT32(REG_StatusWrongState, status);
+    }
 
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongState,
-                REG_Write(
-                    &memory,
-                    REG_AddrScanLimit,
-                    REG_ScanLimitDigit0 - 1));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongState,
-                REG_Write(
-                    &memory,
-                    REG_AddrShutdown,
-                    0xFF));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusWrongState,
-                REG_Write(
-                    &memory,
-                    REG_AddrDisplayTest,
-                    0xAC));
-
-    /* Memory should not be modified */
-    TEST_ASSERT_EQUAL_INT32(0, memcmp(&memory, &memoryCmp, sizeof(REG_Memory)));
+    /* Eventually memory should not be modified */
+    AssertRegMemoryNotModified(&memory);
 }
 
 void test_register_ValidRegAddr_REG_Write_MemoryUpdated()
 {
+    /* Struct for keeping test params */
+    typedef struct
+    {
+        u8* regMemory;
+        REG_Addr regAddr;
+        u8 regState;
+    } TestParams;
+
+    /* Init memory */
     REG_Memory memory;
     REG_MemoryInit(&memory);
 
-    /* Test digit registers */
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrDigit0, 0xFA));
+    const TestParams testParams[] =
+    {
+        {&memory.digit0, REG_AddrDigit0, 0xFA},
+        {&memory.digit7, REG_AddrDigit7, 0xBB},
+        {&memory.decodeMode, REG_AddrDecodeMode, REG_DecodeModeDigit0},
+        {&memory.intensity, REG_AddrIntensity, REG_Intensity29_32},
+        {&memory.scanLimit, REG_AddrScanLimit, REG_ScanLimitDigit0To5},
+        {&memory.shutdown, REG_AddrShutdown, REG_ShutdownOff},
+        {&memory.displayTest, REG_AddrDisplayTest, REG_DisplayTestOn}
+    };
 
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrDigit7, 0xBB));
+    for (size i = 0; i < COUNT_OF(testParams); i++) {
+        REG_Status status = REG_Write(
+                                &memory,
+                                testParams[i].regAddr,
+                                testParams[i].regState);
+        TEST_ASSERT_EQUAL_INT32(REG_StatusOk, status);
 
-    /* Test config registers */
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrDecodeMode, REG_DecodeModeDigit0));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrIntensity, REG_Intensity29_32));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrScanLimit, REG_ScanLimitDigit0To5));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrShutdown, REG_ShutdownOff));
-
-    TEST_ASSERT_EQUAL_INT32(
-                REG_StatusOk,
-                REG_Write(&memory, REG_AddrDisplayTest, REG_DisplayTestOn));
-
-    /* Check whether new values are set */
-    TEST_ASSERT_EQUAL_INT32(0xFA, memory.digit0);
-    TEST_ASSERT_EQUAL_INT32(0xBB, memory.digit7);
-    TEST_ASSERT_EQUAL_INT32(REG_DecodeModeDigit0, memory.decodeMode);
-    TEST_ASSERT_EQUAL_INT32(REG_Intensity29_32, memory.intensity);
-    TEST_ASSERT_EQUAL_INT32(REG_ScanLimitDigit0To5, memory.scanLimit);
-    TEST_ASSERT_EQUAL_INT32(REG_ShutdownOff, memory.shutdown);
-    TEST_ASSERT_EQUAL_INT32(REG_DisplayTestOn, memory.displayTest);
+        /* Check if state is saved */
+        TEST_ASSERT_EQUAL_UINT8(
+                    testParams[i].regState,
+                    *testParams[i].regMemory);
+    }
 }
 
 void test_register_NoOpRegAddr_REG_Write_NothingIsDone()
@@ -162,15 +148,11 @@ void test_register_NoOpRegAddr_REG_Write_NothingIsDone()
     REG_Memory memory;
     REG_MemoryInit(&memory);
 
-    /* Memory to be compared */
-    REG_Memory memoryCmp;
-    REG_MemoryInit(&memoryCmp);
-
     u8 dummyState = 0xAF;
     TEST_ASSERT_EQUAL_INT32(
                 REG_StatusOk,
                 REG_Write(&memory, REG_AddrNoOp, dummyState));
 
-    /* Memory should not be modified */
-    TEST_ASSERT_EQUAL_INT32(0, memcmp(&memory, &memoryCmp, sizeof(REG_Memory)));
+    /* Eventually memory should not be modified */
+    AssertRegMemoryNotModified(&memory);
 }
