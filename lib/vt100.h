@@ -31,10 +31,10 @@ typedef enum
 typedef enum
 {
     VT_FormatNone = 0,
-    VT_FormatBold = U32_BIT(0),
-    VT_FormatUnderlined = U32_BIT(1),
-    VT_FormatBlink = U32_BIT(2),
-    VT_FormatInverted = U32_BIT(3),
+    VT_FormatBold = CM_U32_BIT(0),
+    VT_FormatUnderlined = CM_U32_BIT(1),
+    VT_FormatBlink = CM_U32_BIT(2),
+    VT_FormatInverted = CM_U32_BIT(3),
 } VT_FontFormat;
 
 /* ------------------------------------------------------------------------- */

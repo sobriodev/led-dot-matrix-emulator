@@ -65,7 +65,7 @@ void test_register_InvalidRegAddr_REG_Write_ErrReturned()
     };
 
     u8 dummyState = 0xFF;
-    for (size i = 0; i < COUNT_OF(wrongAddr); i++) {
+    for (size i = 0; i < CM_COUNT_OF(wrongAddr); i++) {
         REG_Status status = REG_Write(&memory, wrongAddr[i], dummyState);
         TEST_ASSERT_EQUAL_INT32(REG_StatusWrongAddr, status);
     }
@@ -91,7 +91,7 @@ void test_register_InvalidRegState_REG_Write_ErrReturned()
 
     };
 
-    for (size i = 0 ; i < COUNT_OF(wrongAddrStatePair); i++) {
+    for (size i = 0 ; i < CM_COUNT_OF(wrongAddrStatePair); i++) {
         REG_Status status = REG_Write(
                                 &memory,
                                 wrongAddrStatePair[i][0],
@@ -128,7 +128,7 @@ void test_register_ValidRegAddr_REG_Write_MemoryUpdated()
         {&memory.displayTest, REG_AddrDisplayTest, REG_DisplayTestOn}
     };
 
-    for (size i = 0; i < COUNT_OF(testParams); i++) {
+    for (size i = 0; i < CM_COUNT_OF(testParams); i++) {
         REG_Status status = REG_Write(
                                 &memory,
                                 testParams[i].regAddr,

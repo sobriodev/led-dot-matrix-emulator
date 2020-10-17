@@ -45,16 +45,16 @@ void PrintFormatCommand(u8 format)
     /* Clear old settings */
     ResetFontFormatCommands();
 
-    if (U32_CHECK_BIT_SET(format, VT_FormatBold)) {
+    if (CM_U32_CHECK_BIT_SET(format, VT_FormatBold)) {
         printf("\e[1m");
     }
-    if (U32_CHECK_BIT_SET(format, VT_FormatUnderlined)) {
+    if (CM_U32_CHECK_BIT_SET(format, VT_FormatUnderlined)) {
         printf("\e[4m");
     }
-    if (U32_CHECK_BIT_SET(format, VT_FormatBlink)) {
+    if (CM_U32_CHECK_BIT_SET(format, VT_FormatBlink)) {
         printf("\e[5m");
     }
-    if (U32_CHECK_BIT_SET(format, VT_FormatInverted)) {
+    if (CM_U32_CHECK_BIT_SET(format, VT_FormatInverted)) {
         printf("\e[7m");
     }
 }
@@ -65,8 +65,8 @@ void PrintFormatCommand(u8 format)
 
 VT_Status VT_PrintCommand(VT_Color foreground, VT_Color background, u8 format)
 {
-    if (!CM_IndexExists(foreground, COUNT_OF(foregroundColorsLut)) ||
-        !CM_IndexExists(background, COUNT_OF(backgroundColorsLut))) {
+    if (!CM_IndexExists(foreground, CM_COUNT_OF(foregroundColorsLut)) ||
+        !CM_IndexExists(background, CM_COUNT_OF(backgroundColorsLut))) {
         return VT_StatusLutErr;
     }
 

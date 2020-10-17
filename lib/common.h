@@ -15,11 +15,11 @@ extern "C" {
 /* -------------------------------- MACROS --------------------------------- */
 /* ------------------------------------------------------------------------- */
 
-#define COUNT_OF(ARR) (sizeof((ARR)) / sizeof((ARR)[0]))
+#define CM_COUNT_OF(ARR)    (sizeof((ARR)) / sizeof((ARR)[0]))
 
 /* Bit operations */
-#define U32_BIT(POS)                (1U << (POS))
-#define U32_CHECK_BIT_SET(VAL, BIT) ((u32)(VAL) & (u32)(BIT))
+#define CM_U32_BIT(POS)                 (1U << (POS))
+#define CM_U32_CHECK_BIT_SET(VAL, BIT)  ((u32)(VAL) & (u32)(BIT))
 
 /* ------------------------------------------------------------------------- */
 /* ------------------------------ DATA TYPES ------------------------------- */
