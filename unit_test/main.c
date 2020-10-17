@@ -32,6 +32,7 @@ int main(void)
     RUN_TEST(test_device_MallocFailure_DEV_CreateDevice_ErrReturned);
     RUN_TEST(test_device_MultipleCalls_DEV_CreateDevice_CorrectIdAssigned);
     RUN_TEST(test_device_DevicePointer_DEV_DestroyDevice_NullAssigned);
+    RUN_TEST(test_device_NullPassed_DEV_GetLineStr_ErrReturned);
 
     /* SUITE: Register */
     RUN_TEST(test_register_NullPassed_REG_MemoryInit_ErrReturned);

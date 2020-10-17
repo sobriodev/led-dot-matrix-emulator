@@ -37,3 +37,10 @@ DEV_Status DEV_DestroyDevice(DEV_Info** devInfo)
 
     return DEV_StatusOk;
 }
+
+DEV_Status DEV_GetLineStr(const DEV_Info *device, DEV_Line line)
+{
+    (void)device;
+    (void)line;
+    return DEV_StatusNullPtr;
+}

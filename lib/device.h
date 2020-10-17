@@ -15,7 +15,8 @@ extern "C" {
 typedef enum
 {
     DEV_StatusOk, /* OK */
-    DEV_StatusMemErr /* Memory allocation error */
+    DEV_StatusMemErr, /* Memory allocation error */
+    DEV_StatusNullPtr /* NULL pointer passed error */
 } DEV_Status;
 
 /* Possible LED colors */
@@ -25,6 +26,12 @@ typedef enum
     DEV_ColorGreen,
     DEV_ColorBlue
 } DEV_Color;
+
+/* Device lines translate to digit registers */
+typedef enum
+{
+    DEV_Line0 = 0
+} DEV_Line;
 
 /* Device info */
 typedef struct
@@ -45,6 +52,9 @@ DEV_Status DEV_CreateDevice(
 
 /* Destroy device */
 DEV_Status DEV_DestroyDevice(DEV_Info** devInfo);
+
+/* Print digit line */
+DEV_Status DEV_GetLineStr(const DEV_Info *device, DEV_Line line);
 
 #if defined(__cplusplus)
 }

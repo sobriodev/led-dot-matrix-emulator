@@ -43,3 +43,13 @@ void test_device_DevicePointer_DEV_DestroyDevice_NullAssigned()
     DEV_DestroyDevice(&devInfo);
     TEST_ASSERT_NULL(devInfo);
 }
+
+/* ------------------------------------------------------------------------- */
+/* ------------------------- DEV_GetLineStr() CASES ------------------------ */
+/* ------------------------------------------------------------------------- */
+
+void test_device_NullPassed_DEV_GetLineStr_ErrReturned(void)
+{
+    DEV_Line dummyLine = DEV_Line0;
+    TEST_ASSERT_EQUAL_INT32(DEV_StatusNullPtr, DEV_GetLineStr(NULL, dummyLine));
+}
