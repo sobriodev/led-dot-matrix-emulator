@@ -9,12 +9,14 @@ extern "C" {
 /* ------------------------- REG_MemoryInit() CASES ------------------------ */
 /* ------------------------------------------------------------------------- */
 
+void test_register_NullPassed_REG_MemoryInit_ErrReturned();
 void test_register_ByDefault_REG_MemoryInit_PerformsCorrectInit();
 
 /* ------------------------------------------------------------------------- */
 /* --------------------------- REG_Write() CASES --------------------------- */
 /* ------------------------------------------------------------------------- */
 
+void test_register_NullPassed_REG_Write_ErrReturned();
 void test_register_InvalidRegAddr_REG_Write_ErrReturned();
 void test_register_InvalidRegState_REG_Write_ErrReturned();
 void test_register_ValidRegAddr_REG_Write_MemoryUpdated();

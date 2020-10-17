@@ -54,8 +54,12 @@ static REG_Status UpdateRegisterIndivisibleRange(
 /* ----------------------------- API FUNCTIONS ----------------------------- */
 /* ------------------------------------------------------------------------- */
 
-void REG_MemoryInit(REG_Memory* regMemory)
+REG_Status REG_MemoryInit(REG_Memory* regMemory)
 {
+    if (regMemory == NULL) {
+        return REG_StatusNullPtr;
+    }
+
     /* Initial power-up digit data */
     regMemory->digit0 = 0x00;
     regMemory->digit1 = 0x00;
@@ -72,10 +76,16 @@ void REG_MemoryInit(REG_Memory* regMemory)
     regMemory->scanLimit = REG_ScanLimitDigit0;
     regMemory->shutdown = REG_ShutdownOn;
     regMemory->displayTest = REG_DisplayTestOff;
+
+    return REG_StatusOk;
 }
 
 REG_Status REG_Write(REG_Memory* regMemory, REG_Addr regAddr, u8 state)
 {
+    if (regMemory == NULL) {
+        return REG_StatusNullPtr;
+    }
+
     switch (regAddr) {
     /* In case no-op was passed - do nothing */
     case REG_AddrNoOp:

@@ -20,6 +20,11 @@ static void AssertRegMemoryNotModified(const REG_Memory* memory)
 /* ------------------------- REG_MemoryInit() CASES ------------------------ */
 /* ------------------------------------------------------------------------- */
 
+void test_register_NullPassed_REG_MemoryInit_ErrReturned()
+{
+    TEST_ASSERT_EQUAL_INT32(REG_StatusNullPtr, REG_MemoryInit(NULL));
+}
+
 void test_register_ByDefault_REG_MemoryInit_PerformsCorrectInit()
 {
     REG_Memory memory;
@@ -48,6 +53,15 @@ void test_register_ByDefault_REG_MemoryInit_PerformsCorrectInit()
 /* ------------------------------------------------------------------------- */
 /* --------------------------- REG_Write() CASES --------------------------- */
 /* ------------------------------------------------------------------------- */
+
+void test_register_NullPassed_REG_Write_ErrReturned()
+{
+    REG_Addr dummyAddr = REG_AddrDigit0;
+    u8 dummyData = 0xFF;
+    TEST_ASSERT_EQUAL_INT32(
+                REG_StatusNullPtr,
+                REG_Write(NULL, dummyAddr, dummyData));
+}
 
 void test_register_InvalidRegAddr_REG_Write_ErrReturned()
 {
