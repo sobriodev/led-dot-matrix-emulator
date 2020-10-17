@@ -16,7 +16,8 @@ typedef enum
 {
     DEV_StatusOk, /* OK */
     DEV_StatusMemErr, /* Memory allocation error */
-    DEV_StatusNullPtr /* NULL pointer passed error */
+    DEV_StatusNullPtr, /* NULL pointer passed error */
+    DEV_StatusWrongLine
 } DEV_Status;
 
 /* Possible LED colors */
@@ -30,7 +31,14 @@ typedef enum
 /* Device lines translate to digit registers */
 typedef enum
 {
-    DEV_Line0 = 0
+    DEV_Line0 = 0,
+    DEV_Line1,
+    DEV_Line2,
+    DEV_Line3,
+    DEV_Line4,
+    DEV_Line5,
+    DEV_Line6,
+    DEV_Line7
 } DEV_Line;
 
 /* Device info */
@@ -54,7 +62,7 @@ DEV_Status DEV_CreateDevice(
 DEV_Status DEV_DestroyDevice(DEV_Info** devInfo);
 
 /* Print digit line */
-DEV_Status DEV_GetLineStr(const DEV_Info *device, DEV_Line line);
+DEV_Status DEV_GetLineStr(const DEV_Info* device, DEV_Line line);
 
 #if defined(__cplusplus)
 }

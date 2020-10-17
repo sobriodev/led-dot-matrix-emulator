@@ -53,3 +53,22 @@ void test_device_NullPassed_DEV_GetLineStr_ErrReturned(void)
     DEV_Line dummyLine = DEV_Line0;
     TEST_ASSERT_EQUAL_INT32(DEV_StatusNullPtr, DEV_GetLineStr(NULL, dummyLine));
 }
+
+void test_device_WrongLine_DEV_GetLineStr_ErrReturned(void)
+{
+    const u32 wrongLines[] =
+    {
+        DEV_Line0 - 1,
+        DEV_Line7 + 1,
+        0x7813,
+        -9401
+    };
+
+    DEV_Info* device;
+    DEV_CreateDevice(&device, DEV_ColorGreen, MEM_Malloc);
+
+    for (size i = 0; i < CM_COUNT_OF(wrongLines); i++) {
+        DEV_Status status = DEV_GetLineStr(device, wrongLines[i]);
+        TEST_ASSERT_EQUAL_INT32(DEV_StatusWrongLine, status);
+    }
+}

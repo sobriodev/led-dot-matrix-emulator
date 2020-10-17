@@ -1,5 +1,6 @@
 #include "device.h"
 #include "mem.h"
+#include "common.h"
 #include <stdlib.h>
 
 /* ------------------------------------------------------------------------- */
@@ -38,9 +39,17 @@ DEV_Status DEV_DestroyDevice(DEV_Info** devInfo)
     return DEV_StatusOk;
 }
 
-DEV_Status DEV_GetLineStr(const DEV_Info *device, DEV_Line line)
+DEV_Status DEV_GetLineStr(const DEV_Info* device, DEV_Line line)
 {
-    (void)device;
-    (void)line;
-    return DEV_StatusNullPtr;
+    /* Null pointer guard */
+    if (device == NULL) {
+        return DEV_StatusNullPtr;
+    }
+
+    /* If the line does not fulfill requirements throw error code */
+    if (!CM_ValueInBounds(line, DEV_Line0, DEV_Line7)) {
+        return DEV_StatusWrongLine;
+    }
+
+    return DEV_StatusOk;
 }

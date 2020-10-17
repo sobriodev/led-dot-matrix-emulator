@@ -23,6 +23,7 @@ void test_device_DevicePointer_DEV_DestroyDevice_NullAssigned();
 /* ------------------------------------------------------------------------- */
 
 void test_device_NullPassed_DEV_GetLineStr_ErrReturned(void);
+void test_device_WrongLine_DEV_GetLineStr_ErrReturned(void);
 
 #if defined(__cplusplus)
 }
