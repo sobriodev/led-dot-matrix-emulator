@@ -6,6 +6,18 @@ extern "C" {
 #endif
 
 #include "common.h"
+#include "register.h"
+
+/* ------------------------------------------------------------------------- */
+/* -------------------------------- MACROS --------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+#define DEV_LEDS            8
+#define DEV_LINE_BUFFER_LEN (DEV_LEDS + 1)
+
+/* Default format characters */
+#define DEV_STR_FORMAT_CHAR_LED_ON  '*'
+#define DEV_STR_FORMAT_CHAR_LED_OFF ' '
 
 /* ------------------------------------------------------------------------- */
 /* ------------------------------ DATA TYPES ------------------------------- */
@@ -41,11 +53,19 @@ typedef enum
     DEV_Line7
 } DEV_Line;
 
+/* Characters used for generating string lines */
+typedef struct {
+    char charLedOn;
+    char charLedOff;
+} DEV_StrFormatChars;
+
 /* Device info */
 typedef struct
 {
     u32 id; /* Should be unique within a program */
     DEV_Color color;
+    DEV_StrFormatChars strFormatChars;
+    REG_Memory regMemory;
 } DEV_Info;
 
 /* ------------------------------------------------------------------------- */
@@ -61,8 +81,13 @@ DEV_Status DEV_CreateDevice(
 /* Destroy device */
 DEV_Status DEV_DestroyDevice(DEV_Info** devInfo);
 
-/* Print digit line */
-DEV_Status DEV_GetLineStr(const DEV_Info* device, DEV_Line line);
+/* Print digit line. The function assumes outputStr
+ * param has enough memory to store 9 chars
+ */
+DEV_Status DEV_GetLineStr(
+        const DEV_Info* device,
+        DEV_Line line,
+        char* outputStr);
 
 #if defined(__cplusplus)
 }

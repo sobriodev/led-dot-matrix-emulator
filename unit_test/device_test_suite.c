@@ -5,6 +5,18 @@
 #include "unity.h"
 
 /* ------------------------------------------------------------------------- */
+/* ---------------------------- PRIVATE FUNCTIONS -------------------------- */
+/* ------------------------------------------------------------------------- */
+
+/* Helper function for generating expected line string */
+static void FillStrWithCh(char* buff, char ch, size len)
+{
+    for (size i = 0; i < len; i++) {
+        buff[i] = ch;
+    }
+}
+
+/* ------------------------------------------------------------------------- */
 /* ------------------------ DEV_CreateDevice() CASES ----------------------- */
 /* ------------------------------------------------------------------------- */
 
@@ -51,7 +63,13 @@ void test_device_DevicePointer_DEV_DestroyDevice_NullAssigned()
 void test_device_NullPassed_DEV_GetLineStr_ErrReturned(void)
 {
     DEV_Line dummyLine = DEV_Line0;
-    TEST_ASSERT_EQUAL_INT32(DEV_StatusNullPtr, DEV_GetLineStr(NULL, dummyLine));
+    char buff[DEV_LINE_BUFFER_LEN] = {0};
+    TEST_ASSERT_EQUAL_INT32(
+                DEV_StatusNullPtr,
+                DEV_GetLineStr(NULL, dummyLine, buff));
+
+    /* Buffer should be not modified after operation */
+    TEST_ASSERT_EQUAL_STRING("", buff);
 }
 
 void test_device_WrongLine_DEV_GetLineStr_ErrReturned(void)
@@ -66,9 +84,36 @@ void test_device_WrongLine_DEV_GetLineStr_ErrReturned(void)
 
     DEV_Info* device;
     DEV_CreateDevice(&device, DEV_ColorGreen, MEM_Malloc);
+    char buff[DEV_LINE_BUFFER_LEN] = {0};
 
     for (size i = 0; i < CM_COUNT_OF(wrongLines); i++) {
-        DEV_Status status = DEV_GetLineStr(device, wrongLines[i]);
+        DEV_Status status = DEV_GetLineStr(device, wrongLines[i], buff);
         TEST_ASSERT_EQUAL_INT32(DEV_StatusWrongLine, status);
+
+        /* Buffer should be not modified after operation */
+        TEST_ASSERT_EQUAL_STRING("", buff);
     }
+    DEV_DestroyDevice(&device);
+}
+
+void test_device_ByDefault_DEV_GetLineStr_CorrectStrReturned(void)
+{
+    DEV_Info* device;
+    DEV_CreateDevice(&device, DEV_ColorGreen, MEM_Malloc);
+    char buff[DEV_LINE_BUFFER_LEN] = {0};
+
+    /* Generate expected string */
+    char defaultStr[DEV_LINE_BUFFER_LEN] = {0};
+    FillStrWithCh(
+            defaultStr,
+            DEV_STR_FORMAT_CHAR_LED_OFF,
+            DEV_LEDS);
+
+    /* Do test */
+    for (size i = DEV_Line0; i <= DEV_Line7; i++) {
+        DEV_Status status = DEV_GetLineStr(device, i, buff);
+        TEST_ASSERT_EQUAL_INT32(DEV_StatusOk, status);
+        TEST_ASSERT_EQUAL_STRING(defaultStr, buff);
+    }
+    DEV_DestroyDevice(&device);
 }

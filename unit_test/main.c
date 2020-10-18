@@ -34,6 +34,7 @@ int main(void)
     RUN_TEST(test_device_DevicePointer_DEV_DestroyDevice_NullAssigned);
     RUN_TEST(test_device_NullPassed_DEV_GetLineStr_ErrReturned);
     RUN_TEST(test_device_WrongLine_DEV_GetLineStr_ErrReturned);
+    RUN_TEST(test_device_ByDefault_DEV_GetLineStr_CorrectStrReturned);
 
     /* SUITE: Register */
     RUN_TEST(test_register_NullPassed_REG_MemoryInit_ErrReturned);
