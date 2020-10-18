@@ -117,3 +117,8 @@ void test_device_ByDefault_DEV_GetLineStr_CorrectStrReturned(void)
     }
     DEV_DestroyDevice(&device);
 }
+
+void test_device_DigitModified_DEV_GetLineStr_CorrectStrReturned(void)
+{
+    /* TODO there must be a function to modify on/off chars */
+}
