@@ -7,6 +7,7 @@ extern "C" {
 
 #include "common.h"
 #include "register.h"
+#include <string.h>
 
 /* ------------------------------------------------------------------------- */
 /* -------------------------------- MACROS --------------------------------- */
@@ -88,6 +89,14 @@ DEV_Status DEV_GetLineStr(
         const DEV_Info* device,
         DEV_Line line,
         char* outputStr);
+
+/* Set line format characters */
+static inline void DEV_SetLineFormatCh(
+        DEV_Info* device,
+        const DEV_StrFormatChars* chSet)
+{
+    memcpy(&device->strFormatChars, chSet, sizeof(DEV_StrFormatChars));
+}
 
 #if defined(__cplusplus)
 }

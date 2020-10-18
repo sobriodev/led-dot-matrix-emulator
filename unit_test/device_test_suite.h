@@ -27,6 +27,13 @@ void test_device_WrongLine_DEV_GetLineStr_ErrReturned(void);
 void test_device_ByDefault_DEV_GetLineStr_CorrectStrReturned(void);
 void test_device_DigitModified_DEV_GetLineStr_CorrectStrReturned(void);
 
+/* ------------------------------------------------------------------------- */
+/* ----------------------- DEV_SetLineFormatCh() CASES --------------------- */
+/* ------------------------------------------------------------------------- */
+
+void test_device_NewFormatCh_DEV_SetLineFormatCh_SetCorrectly(void);
+
+
 #if defined(__cplusplus)
 }
 #endif

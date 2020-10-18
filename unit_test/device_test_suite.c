@@ -122,3 +122,24 @@ void test_device_DigitModified_DEV_GetLineStr_CorrectStrReturned(void)
 {
     /* TODO there must be a function to modify on/off chars */
 }
+
+/* ------------------------------------------------------------------------- */
+/* ----------------------- DEV_SetLineFormatCh() CASES --------------------- */
+/* ------------------------------------------------------------------------- */
+
+void test_device_NewFormatCh_DEV_SetLineFormatCh_SetCorrectly(void)
+{
+    /* New character set */
+    DEV_StrFormatChars newCh;
+    newCh.charLedOff = '_';
+    newCh.charLedOn = 'x';
+
+    DEV_Info* device;
+    DEV_CreateDevice(&device, DEV_ColorGreen, MEM_Malloc);
+    DEV_SetLineFormatCh(device, &newCh);
+
+    TEST_ASSERT_EQUAL_CHAR('_', device->strFormatChars.charLedOff);
+    TEST_ASSERT_EQUAL_CHAR('x', device->strFormatChars.charLedOn);
+
+    DEV_DestroyDevice(&device);
+}
